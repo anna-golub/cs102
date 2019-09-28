@@ -9,7 +9,18 @@ def encrypt_caesar(plaintext: str) -> str:
     >>> encrypt_caesar("")
     ''
     """
-    # PUT YOUR CODE HERE
+    ciphertext = [''] * len(plaintext)
+    for i in range(len(plaintext)):
+
+        if not plaintext[i].isalpha():
+            ciphertext[i] = plaintext[i]
+
+        elif plaintext[i] in ('X', 'Y', 'Z', 'x', 'y', 'z'):
+            ciphertext[i] = chr(ord(plaintext[i]) - 23)
+        else:
+            ciphertext[i] = chr(ord(plaintext[i]) + 3)
+
+    ciphertext = "".join(ciphertext)
     return ciphertext
 
 
