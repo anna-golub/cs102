@@ -35,5 +35,16 @@ def decrypt_caesar(ciphertext: str) -> str:
     >>> decrypt_caesar("")
     ''
     """
-    # PUT YOUR CODE HERE
+    plaintext = [''] * len(ciphertext)
+    for i in range(len(ciphertext)):
+
+        if not ciphertext[i].isalpha():
+            plaintext[i] = ciphertext[i]
+
+        elif ciphertext[i] in ('A', 'B', 'C', 'a', 'b', 'c'):
+            plaintext[i] = chr(ord(ciphertext[i]) + 23)
+        else:
+            plaintext[i] = chr(ord(ciphertext[i]) - 3)
+
+    plaintext = "".join(plaintext)
     return plaintext
