@@ -37,5 +37,21 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
     'ATTACKATDAWN'
     """
-    # PUT YOUR CODE HERE
-    # return plaintext
+    plaintext = [''] * len(ciphertext)
+    for i in range(len(ciphertext)):
+
+        if not ciphertext[i].isalpha():
+            plaintext[i] = ciphertext[i]
+        else:
+            cipherind = 65
+            if ord(ciphertext[i]) >= 97:
+                cipherind = 97
+            keyind = 65
+            if ord(keyword[i % len(keyword)]) >= 97:
+                keyind = 97
+
+            plaintext[i] = chr(
+                (ord(ciphertext[i]) % cipherind - ord(keyword[i % len(keyword)]) % keyind) % 26 + cipherind)
+
+    plaintext = "".join(plaintext)
+    return plaintext
