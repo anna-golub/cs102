@@ -1,4 +1,5 @@
 from typing import Tuple
+import random
 
 
 def is_prime(n: int) -> bool:
@@ -16,6 +17,7 @@ def is_prime(n: int) -> bool:
             return False
         d += 1
     return True
+    pass
 
 
 def generate_keypair(p: int, q: int) -> Tuple[Tuple[int, int], Tuple[int, int]]:
@@ -25,27 +27,26 @@ def generate_keypair(p: int, q: int) -> Tuple[Tuple[int, int], Tuple[int, int]]:
         raise ValueError('p and q cannot be equal')
 
     # n = pq
-    # PUT YOUR CODE HERE
+    n = p * q
 
     # phi = (p-1)(q-1)
-    # PUT YOUR CODE HERE
+    phi = (p - 1) * (q - 1)
 
     # Choose an integer e such that e and phi(n) are coprime
-    # e = random.randrange(1, phi)
+    e = random.randrange(1, phi)
 
     # Use Euclid's Algorithm to verify that e and phi(n) are comprime
-    # g = gcd(e, phi)
+    g = gcd(e, phi)
 
+    while g != 1:
+        e = random.randrange(1, phi)
+    g = gcd(e, phi)
 
-# while g != 1:
-#   e = random.randrange(1, phi)
-#  g = gcd(e, phi)
-
-# Use Extended Euclid's Algorithm to generate the private key
-# d = multiplicative_inverse(e, phi)
-# Return public and private keypair
-# Public key is (e, n) and private key is (d, n)
-# return ((e, n), (d, n))
+    # Use Extended Euclid's Algorithm to generate the private key
+    d = multiplicative_inverse(e, phi)
+    # Return public and private keypair
+    # Public key is (e, n) and private key is (d, n)
+    return ((e, n), (d, n))
 
 
 def gcd(a: int, b: int) -> int:
@@ -55,7 +56,12 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    # PUT YOUR CODE HERE
+    while a * b != 0:
+        if a > b:
+            a %= b
+        else:
+            b %= a
+    return a + b
     pass
 
 
