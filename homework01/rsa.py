@@ -86,7 +86,11 @@ def multiplicative_inverse(e: int, phi: int) -> int:
         a2 = a0 - a1 * (r0 // r1)
         b2 = b0 - b1 * (r0 // r1)
         r2 = a2 * e + b2 * phi
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> feature/rsa_new
         r0 = r1
         r1 = r2
         a0 = a1
