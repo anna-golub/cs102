@@ -70,5 +70,31 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    # PUT YOUR CODE HERE
+    r0 = e % phi
+    a0 = 1
+    b0 = -(e // phi)
+
+    r1 = phi % r0
+    a1 = -(phi // r0)
+    b1 = 1 + (e // phi) * (phi // r0)
+    r2 = -1
+
+    if r1 == 0:
+        return r0
+
+    while r2 != 0:
+        a2 = a0 - a1 * (r0 // r1)
+        b2 = b0 - b1 * (r0 // r1)
+        r2 = a2 * e + b2 * phi
+        
+        r0 = r1
+        r1 = r2
+        a0 = a1
+        a1 = a2
+        b0 = b1
+        b1 = b2
+
+    if a0 < 0:
+        a0 += phi * (abs(a0) // phi + 1)
+    return a0
     pass
