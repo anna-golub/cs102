@@ -17,7 +17,6 @@ def is_prime(n: int) -> bool:
             return False
         d += 1
     return True
-    pass
 
 
 def generate_keypair(p: int, q: int) -> Tuple[Tuple[int, int], Tuple[int, int]]:
@@ -62,7 +61,6 @@ def gcd(a: int, b: int) -> int:
         else:
             b %= a
     return a + b
-    pass
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
@@ -97,4 +95,3 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     if a0 < 0:
         a0 += phi * (abs(a0) // phi + 1)
     return a0
-    pass
