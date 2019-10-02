@@ -9,18 +9,16 @@ def encrypt_caesar(plaintext: str) -> str:
     >>> encrypt_caesar("")
     ''
     """
-    ciphertext = [''] * len(plaintext)
-    for i in range(len(plaintext)):
+    ciphertext = ''
+    for ch in plaintext:
 
-        if not plaintext[i].isalpha():
-            ciphertext[i] = plaintext[i]
-
-        elif plaintext[i] in ('X', 'Y', 'Z', 'x', 'y', 'z'):
-            ciphertext[i] = chr(ord(plaintext[i]) - 23)
+        if not ch.isalpha():
+            ciphertext += ch
+        elif 'x' <= ch <= 'z' or 'X' <= ch <= 'Z':
+            ciphertext += chr(ord(ch) - 23)
         else:
-            ciphertext[i] = chr(ord(plaintext[i]) + 3)
+            ciphertext += chr(ord(ch) + 3)
 
-    ciphertext = "".join(ciphertext)
     return ciphertext
 
 
@@ -35,16 +33,14 @@ def decrypt_caesar(ciphertext: str) -> str:
     >>> decrypt_caesar("")
     ''
     """
-    plaintext = [''] * len(ciphertext)
-    for i in range(len(ciphertext)):
+    plaintext = ''
+    for ch in ciphertext:
 
-        if not ciphertext[i].isalpha():
-            plaintext[i] = ciphertext[i]
-
-        elif ciphertext[i] in ('A', 'B', 'C', 'a', 'b', 'c'):
-            plaintext[i] = chr(ord(ciphertext[i]) + 23)
+        if not ch.isalpha():
+            plaintext += ch
+        elif 'A' <= ch <= 'C' or 'a' <= ch <= 'c':
+            plaintext += chr(ord(ch) + 23)
         else:
-            plaintext[i] = chr(ord(ciphertext[i]) - 3)
+            plaintext += chr(ord(ch) - 3)
 
-    plaintext = "".join(plaintext)
     return plaintext
