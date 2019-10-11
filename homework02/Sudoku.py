@@ -178,17 +178,38 @@ def generate_sudoku(N: int) -> List[List[str]]:
     True
     """
     N = 81 - min(N, 81)
-    # M = min(N, 9)
-    grid = solve([['.'] * 9 for _ in range(9)])
-    # for i in range(M):
-    #    grid[random.randint(0, 8)][random.randint(0, 8)] = i
+    grid = [[''] * 9 for _ in range(9)]
 
-    # if M < N:
+    for i in range(9):
+        for j in range(9):
+            if 0 <= i < 3:
+                grid[i][j] = str((i * 3 + j) % 9 + 1)
+            elif 3 <= i < 6:
+                grid[i][j] = str((3 * (i % 3) + 1 + j) % 9 + 1)
+            else:
+                grid[i][j] = str((3 * (i % 3) + 2 + j) % 9 + 1)
+
+    for i in range(9):
+        for j in range(i, 9):
+            temp = grid[i][j]
+            grid[i][j] = grid[j][i]
+            grid[j][i] = temp
+
+    row1, row2 = random.randint(0, 2), random.randint(0, 2)
+    grid[row1], grid[row2] = grid[row2], grid[row1]
+
+    col1, col2 = random.randint(3, 5), random.randint(3, 5)
+    for i in range(9):
+        temp = grid[i][col1]
+        grid[i][col1] = grid[i][col2]
+        grid[i][col2] = temp
+
     while N:
         row, col = random.randint(0, 8), random.randint(0, 8)
         if grid[row][col] != '.':
             grid[row][col] = '.'
             N -= 1
+
     return grid
 
 
