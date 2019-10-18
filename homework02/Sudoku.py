@@ -20,7 +20,7 @@ def display(grid: List[List[str]]) -> None:
     print()
 
 
-def group(values: List[int], n: int) -> List[List[int]]:
+def group(values: List[str], n: int) -> List[List[str]]:
     """
     Сгруппировать значения values в список, состоящий из списков по n элементов
     >>> group([1,2,3,4], 2)
