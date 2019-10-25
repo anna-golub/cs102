@@ -45,17 +45,17 @@ class GameOfLife:
         self.screen.fill(pygame.Color('white'))
 
         # Создание списка клеток
-        self.create_grid()
+        self.grid = self.create_grid(randomize=True)
 
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     running = False
-            self.draw_lines()
 
             # Отрисовка списка клеток
             self.draw_grid()
+            self.draw_lines()
             # Выполнение одного шага игры (обновление состояния ячеек)
             # PUT YOUR CODE HERE
 
@@ -92,11 +92,11 @@ class GameOfLife:
         for i in range(self.cell_height):
             for j in range(self.cell_width):
                 cur_color = pygame.Color('white')
-                if Grid[i][j]:
+                if self.grid[i][j]:
                     cur_color = pygame.Color('green')
                 pygame.draw.rect(self.screen, cur_color,
                                  (i * self.cell_size, j * self.cell_size, self.cell_size, self.cell_size))
-        pass
+        return
 
     def get_neighbours(self, cell: Cell) -> Cells:
         """
@@ -113,7 +113,30 @@ class GameOfLife:
         out : Cells
             Список соседних клеток.
         """
-        pass
+
+        x, y = cell
+        res = []
+        if x > 0:
+            res.append(self.grid[x - 1][y])
+            if y > 0:
+                res.append(self.grid[x - 1][y - 1])
+            if y < self.cell_height - 1:
+                res.append(self.grid[x - 1][y + 1])
+
+        if x < self.cell_width - 1:
+            res.append(self.grid[x + 1][y])
+            if y > 0:
+                res.append(self.grid[x + 1][y - 1])
+            if y < self.cell_height - 1:
+                res.append(self.grid[x + 1][y + 1])
+
+        if y > 0:
+            res.append(self.grid[x][y - 1])
+        if y < self.cell_height - 1:
+            res.append(self.grid[x][y + 1])
+
+        #print(res)
+        return res
 
     def get_next_generation(self) -> Grid:
         """
@@ -126,7 +149,7 @@ class GameOfLife:
         pass
 
 
-game = GameOfLife(320, 240, 40)
-print(game.cell_width, game.cell_height)
-grid = game.create_grid(randomize=True)
-print(grid)
+if __name__ == '__main__':
+    game = GameOfLife(240, 320, 20)
+    game.run()
+    game.get_neighbours((2, 2))
