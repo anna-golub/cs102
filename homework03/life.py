@@ -60,6 +60,10 @@ class GameOfLife:
         return res
 
     def get_next_generation(self) -> Grid:
+        for i in range(self.rows):
+            for j in range(self.cols):
+                self.prev_generation[i][j] = self.curr_generation[i][j]
+
         alive = []
         dead = []
 
@@ -81,9 +85,6 @@ class GameOfLife:
         """
         Выполнить один шаг игры.
         """
-        for i in range(self.rows):
-            for j in range(self.cols):
-                self.prev_generation[i][j] = self.curr_generation[i][j]
         self.get_next_generation()
         self.generations += 1
         return
@@ -93,14 +94,18 @@ class GameOfLife:
         """
         Не превысило ли текущее число поколений максимально допустимое.
         """
-        return self.generations > self.max_generations
+        return self.generations >= self.max_generations
 
     @property
     def is_changing(self) -> bool:
         """
         Изменилось ли состояние клеток с предыдущего шага.
         """
-        return self.prev_generation.__eq__(self.curr_generation)
+        for i in range(self.rows):
+            for j in range(self.cols):
+                if self.prev_generation[i][j] != self.curr_generation[i][j]:
+                    return True
+        return False
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> 'GameOfLife':
@@ -111,11 +116,12 @@ class GameOfLife:
         with open(filename, 'r') as f:
             lines = f.readlines()
         rows = len(lines)
-        cols = len(lines[0])
+        cols = len(lines[0].strip())
         game = GameOfLife(size=(rows, cols), randomize=False)
 
         with open(filename, 'r') as f:
             for i in range(rows):
+                lines[i].strip()
                 for j in range(cols):
                     game.curr_generation[i][j] = int(lines[i][j])
         return game
@@ -126,5 +132,15 @@ class GameOfLife:
         """
         with open(filename, 'w') as f:
             for row in self.curr_generation:
-                f.write(''.join(str(v) for v in row))
+                f.write(''.join(str(v) for v in row) + '\n')
         return
+
+
+life = GameOfLife.from_file(pathlib.Path('glider.txt'))
+for i in range(life.rows):
+    print(life.curr_generation[i])
+for _ in range(4):
+    life.step()
+for i in range(life.rows):
+    print(life.curr_generation[i])
+life.save(pathlib.Path('glider-4-steps.txt'))
