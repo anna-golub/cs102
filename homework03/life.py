@@ -28,21 +28,59 @@ class GameOfLife:
         self.generations = 1
 
     def create_grid(self, randomize: bool = False) -> Grid:
-        # Copy from previous assignment
-        pass
+        grid = [[0] * self.cols for _ in range(self.rows)]
+        if randomize:
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    grid[i][j] = random.randint(0, 1)
+        return grid
 
     def get_neighbours(self, cell: Cell) -> Cells:
-        # Copy from previous assignment
-        pass
+        row, col = cell
+        res = []
+        if row > 0:
+            res.append(self.curr_generation[row - 1][col])
+            if col > 0:
+                res.append(self.curr_generation[row - 1][col - 1])
+            if col < self.cols - 1:
+                res.append(self.curr_generation[row - 1][col + 1])
+
+        if row < self.rows - 1:
+            res.append(self.curr_generation[row + 1][col])
+            if col > 0:
+                res.append(self.curr_generation[row + 1][col - 1])
+            if col < self.cols - 1:
+                res.append(self.curr_generation[row + 1][col + 1])
+
+        if col > 0:
+            res.append(self.curr_generation[row][col - 1])
+        if col < self.cols - 1:
+            res.append(self.curr_generation[row][col + 1])
+
+        return res
 
     def get_next_generation(self) -> Grid:
-        # Copy from previous assignment
-        pass
+        alive = []
+        dead = []
+
+        for i in range(self.rows):
+            for j in range(self.cols):
+                neighbours = sum(self.get_neighbours((i, j)))
+                if neighbours < 2 or neighbours > 3:
+                    dead.append((i, j))
+                elif neighbours == 3 and self.curr_generation[i][j] == 0:
+                    alive.append((i, j))
+
+        for t in alive:
+            self.curr_generation[t[0]][t[1]] = 1
+        for t in dead:
+            self.curr_generation[t[0]][t[1]] = 0
+        return self.curr_generation
 
     def step(self) -> None:
         """
         Выполнить один шаг игры.
-        """
+        """n
         pass
 
     @property
@@ -57,7 +95,7 @@ class GameOfLife:
         """
         Изменилось ли состояние клеток с предыдущего шага.
         """
-        pass
+        return self.prev_generation.__eq__(self.curr_generation)
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> 'GameOfLife':
