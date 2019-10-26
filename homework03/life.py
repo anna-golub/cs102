@@ -80,15 +80,20 @@ class GameOfLife:
     def step(self) -> None:
         """
         Выполнить один шаг игры.
-        """n
-        pass
+        """
+        for i in range(self.rows):
+            for j in range(self.cols):
+                self.prev_generation[i][j] = self.curr_generation[i][j]
+        self.get_next_generation()
+        self.generations += 1
+        return
 
     @property
     def is_max_generations_exceeded(self) -> bool:
         """
         Не превысило ли текущее число поколений максимально допустимое.
         """
-        pass
+        return self.generations > self.max_generations
 
     @property
     def is_changing(self) -> bool:
@@ -102,10 +107,24 @@ class GameOfLife:
         """
         Прочитать состояние клеток из указанного файла.
         """
-        pass
 
-    def save(filename: pathlib.Path) -> None:
+        with open(filename, 'r') as f:
+            lines = f.readlines()
+        rows = len(lines)
+        cols = len(lines[0])
+        game = GameOfLife(size=(rows, cols), randomize=False)
+
+        with open(filename, 'r') as f:
+            for i in range(rows):
+                for j in range(cols):
+                    game.curr_generation[i][j] = int(lines[i][j])
+        return game
+
+    def save(self, filename: pathlib.Path) -> None:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        pass
+        with open(filename, 'w') as f:
+            for row in self.curr_generation:
+                f.write(''.join(str(v) for v in row))
+        return
