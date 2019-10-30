@@ -111,14 +111,13 @@ class TestGameOfLife(unittest.TestCase):
 
     def test_prev_generation_is_correct(self):
         game = GameOfLife((self.rows, self.cols))
-        game.curr_generation = self.grid
-        print('self grid before step')
-        print(self.grid)
+        #game.curr_generation = self.grid
+
+        for i in range(game.rows):
+            for j in range(game.cols):
+                game.curr_generation[i][j] = self.grid[i][j]
+
         game.step()
-        print('self grid after step')
-        print(self.grid)
-        print('game prev generation after step')
-        print(game.prev_generation)
         self.assertEqual(game.prev_generation, self.grid)
 
     def test_is_max_generations_exceed(self):
@@ -127,7 +126,7 @@ class TestGameOfLife(unittest.TestCase):
         game.curr_generation = self.grid
         for _ in range(max_generations - 1):
             game.step()
-        #self.assertEqual(game.n_generation, max_generations)
+        self.assertEqual(game.generations, max_generations)
         self.assertTrue(game.is_max_generations_exceeded)
 
     def test_is_changing(self):
@@ -148,4 +147,3 @@ loader = unittest.TestLoader()
 suite = loader.loadTestsFromTestCase(TestGameOfLife)
 runner = unittest.TextTestRunner(verbosity=2)
 result = runner.run(suite)
-

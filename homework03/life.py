@@ -87,7 +87,6 @@ class GameOfLife:
         """
         self.get_next_generation()
         self.generations += 1
-        return
 
     @property
     def is_max_generations_exceeded(self) -> bool:
@@ -106,6 +105,7 @@ class GameOfLife:
                 if self.prev_generation[i][j] != self.curr_generation[i][j]:
                     return True
         return False
+        # return not self.curr_generation == self.prev_generation
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> 'GameOfLife':
@@ -134,13 +134,3 @@ class GameOfLife:
             for row in self.curr_generation:
                 f.write(''.join(str(v) for v in row) + '\n')
         return
-
-
-life = GameOfLife.from_file(pathlib.Path('glider.txt'))
-for i in range(life.rows):
-    print(life.curr_generation[i])
-for _ in range(4):
-    life.step()
-for i in range(life.rows):
-    print(life.curr_generation[i])
-life.save(pathlib.Path('glider-4-steps.txt'))

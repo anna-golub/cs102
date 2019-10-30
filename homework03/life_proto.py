@@ -99,7 +99,6 @@ class GameOfLife:
                     cur_color = pygame.Color('green')
                 pygame.draw.rect(self.screen, cur_color,
                                  (j * self.cell_size, i * self.cell_size, self.cell_size, self.cell_size))
-        return
 
     def get_neighbours(self, cell: Cell) -> Cells:
         """
@@ -170,4 +169,3 @@ class GameOfLife:
 if __name__ == '__main__':
     game = GameOfLife(240, 240, 20)
     game.run()
-
