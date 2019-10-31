@@ -105,7 +105,6 @@ class GameOfLife:
                 if self.prev_generation[i][j] != self.curr_generation[i][j]:
                     return True
         return False
-        # return not self.curr_generation == self.prev_generation
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> 'GameOfLife':

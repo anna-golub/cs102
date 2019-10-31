@@ -25,7 +25,8 @@ class GameOfLife:
         self.cell_width = self.width // self.cell_size
         self.cell_height = self.height // self.cell_size
 
-        self.grid = None
+        # Создание списка клеток
+        self.grid = self.create_grid(randomize=True)
 
         # Скорость протекания игры
         self.speed = speed
@@ -45,9 +46,6 @@ class GameOfLife:
         clock = pygame.time.Clock()
         pygame.display.set_caption('Game of Life')
         self.screen.fill(pygame.Color('white'))
-
-        # Создание списка клеток
-        self.grid = self.create_grid(randomize=True)
 
         running = True
         while running:
@@ -168,4 +166,5 @@ class GameOfLife:
 
 if __name__ == '__main__':
     game = GameOfLife(240, 240, 20)
+    print(game.grid)
     game.run()
