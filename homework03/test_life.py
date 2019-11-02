@@ -98,7 +98,7 @@ class TestGameOfLife(unittest.TestCase):
         game = GameOfLife((self.rows, self.cols))
         game.curr_generation = self.grid
 
-        with open('steps.txt') as f:
+        with open('homework03/steps.txt') as f:
             steps = json.load(f)
 
         num_updates = 0
@@ -111,7 +111,6 @@ class TestGameOfLife(unittest.TestCase):
 
     def test_prev_generation_is_correct(self):
         game = GameOfLife((self.rows, self.cols))
-        #game.curr_generation = self.grid
 
         for i in range(game.rows):
             for j in range(game.cols):

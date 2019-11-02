@@ -166,5 +166,4 @@ class GameOfLife:
 
 if __name__ == '__main__':
     game = GameOfLife(240, 240, 20)
-    print(game.grid)
     game.run()
