@@ -72,6 +72,6 @@ class GUI(UI):
 
 
 if __name__ == '__main__':
-    life = GameOfLife((24, 24), max_generations=500)
+    life = GameOfLife((24, 24), max_generations=50)
     gui = GUI(life)
     gui.run()

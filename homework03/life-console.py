@@ -31,8 +31,6 @@ class Console(UI):
 
     def run(self) -> None:
         screen = curses.initscr()
-        # curses.noecho()
-        # curses.cbreak()
 
         sleep_time = 0.5
         while not self.life.is_max_generations_exceeded:
@@ -52,6 +50,6 @@ class Console(UI):
 
 
 if __name__ == '__main__':
-    life = GameOfLife((10, 10), max_generations=10)
+    life = GameOfLife((24, 24), max_generations=50)
     ui = Console(life)
     ui.run()
