@@ -111,7 +111,6 @@ class GameOfLife:
         """
         Прочитать состояние клеток из указанного файла.
         """
-
         with open(filename, 'r') as f:
             lines = f.readlines()
         rows = len(lines)
