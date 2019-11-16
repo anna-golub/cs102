@@ -8,7 +8,7 @@ weekdays = {'/monday': '1', '/tuesday': '2', '/wednesday': '3', '/thursday': '4'
             '/sunday': '1'}
 weekdays_rus = {1: 'Понедельник', 2: 'Вторник', 3: 'Среда', 4: 'Четверг', 5: 'Пятница', 6: 'Суббота'}
 
-telebot.apihelper.proxy = {'https': 'https://149.56.106.104:3128'}
+telebot.apihelper.proxy = {'https': 'https://200.89.178.217:8080'}
 bot = telebot.TeleBot(config.access_token)
 
 
