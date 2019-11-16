@@ -8,7 +8,7 @@ weekdays = {'/monday': '1', '/tuesday': '2', '/wednesday': '3', '/thursday': '4'
             '/sunday': '1'}
 weekdays_rus = {1: 'Понедельник', 2: 'Вторник', 3: 'Среда', 4: 'Четверг', 5: 'Пятница', 6: 'Суббота'}
 
-telebot.apihelper.proxy = {'https': 'https://200.89.178.217:8080'}
+telebot.apihelper.proxy = {'https': 'https://209.90.63.108:80'}
 bot = telebot.TeleBot(config.access_token)
 
 
@@ -146,31 +146,11 @@ def get_tomorrow(message):
 @bot.message_handler(commands=['all'])
 def get_all_schedule(message):
     """ Получить расписание на всю неделю для указанной группы """
-    _, group, week = message.text.split()
-    web_page = get_page(group, week)
-    soup = BeautifulSoup(web_page, "html5lib")
-    resp = ''
-
-    for day in range(1, 7):
-        resp += weekdays_rus[day] + '\n\n'
-        schedule_table = soup.find("table", attrs={"id": str(day) + "day"})
-        if schedule_table is None:
-            resp += 'В этот день занятий нет \n'
-        else:
-            times_list = schedule_table.find_all("td", attrs={"class": "time"})
-            times_list = [time.span.text for time in times_list]
-
-            locations_list = schedule_table.find_all("td", attrs={"class": "room"})
-            locations_list = [room.span.text for room in locations_list]
-
-            lessons_list = schedule_table.find_all("td", attrs={"class": "lesson"})
-            lessons_list = [lesson.text.split() for lesson in lessons_list]
-            lessons_list = [' '.join([info for info in lesson_info if info]) for lesson_info in lessons_list]
-
-            for time, location, lesson in zip(times_list, locations_list, lessons_list):
-                resp += '<b>{}</b>, {}, {}\n'.format(time, location, lesson)
-        resp += '\n'
-    bot.send_message(message.chat.id, resp, parse_mode='HTML')
+    temp = message.text[4:]
+    for day in list(weekdays.keys())[:len(weekdays) - 1]:
+        message.text = day + temp
+        bot.send_message(message.chat.id, weekdays_rus[int(weekdays[day])], parse_mode='HTML')
+        get_schedule(message)
 
 
 if __name__ == '__main__':
