@@ -8,7 +8,6 @@ weekdays = {'/monday': '1', '/tuesday': '2', '/wednesday': '3', '/thursday': '4'
             '/sunday': '1'}
 weekdays_rus = {1: 'Понедельник', 2: 'Вторник', 3: 'Среда', 4: 'Четверг', 5: 'Пятница', 6: 'Суббота'}
 
-telebot.apihelper.proxy = {'https': 'https://209.90.63.108:80'}
 bot = telebot.TeleBot(config.access_token)
 
 
@@ -36,7 +35,6 @@ def parse_schedule(web_page, day):
         # Время проведения занятий
         times_list = schedule_table.find_all("td", attrs={"class": "time"})
         times_list = [time.span.text for time in times_list]
-        print(times_list)
 
         # Место проведения занятий
         locations_list = schedule_table.find_all("td", attrs={"class": "room"})
@@ -61,14 +59,14 @@ def get_schedule(message):
     day = weekdays[day]
 
     web_page = get_page(group, week)
-    if not check_web_page(web_page):
+    if not check_web_page(week, web_page):
         resp = 'Расписание не найдено'
         bot.send_message(message.chat.id, resp, parse_mode='HTML')
         return
 
     test = parse_schedule(web_page, day)
     if not test:
-        resp = 'Сегодня занятий нет'
+        resp = 'Занятий нет'
     else:
         times_list, locations_list, classrooms_list, lessons_list = test
         resp = ''
@@ -83,7 +81,7 @@ def get_near_lesson(message):
     _, group, week = message.text.split()
     web_page = get_page(group, week)
 
-    if not check_web_page(web_page):
+    if not check_web_page(week, web_page):
         resp = 'Расписание не найдено'
         bot.send_message(message.chat.id, resp, parse_mode='HTML')
         return
@@ -136,10 +134,14 @@ def get_all_schedule(message):
         get_schedule(message)
 
 
-def check_web_page(web_page):
-    soup = BeautifulSoup(web_page, "html5lib")
-    if soup.find("article", attrs={"class": "content_block", "style": "position:relative;"}):
+def check_web_page(week, web_page):
+    if week not in ('0', '1', '2'):
         return False
+    soup = BeautifulSoup(web_page, "html5lib")
+    check_items = soup.find_all("article", attrs={"class": "content_block", "style": "position:relative;"})
+    for item in check_items:
+        if 'Расписание не найдено' in item.text:
+            return False
     return True
 
 
