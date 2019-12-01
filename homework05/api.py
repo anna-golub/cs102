@@ -43,11 +43,13 @@ def get_friends(user_id, fields):
 
     query = f"{domain}/friends.get?access_token={access_token}&user_id={user_id}&fields={fields}&v={v}"
     response = get(url=query)
-    if not response:
+    try:
+        return response.json()['response']['items']
+    except:
         return None
-    return response.json()
+    # return response.json(), response.json()['response']['items']
 
 
 if __name__ == "__main__":
-    # print(get_friends(141602985, 'bdate'))
-    print(get('http://sdjhgadhjghs.om'))
+    print(get_friends(105153820, ''))
+    # print(get('http://sdjhgadhjghs.om'))

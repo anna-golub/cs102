@@ -24,7 +24,7 @@ def age_predict(user_id: int) -> Optional[float]:
     today = dt.datetime.now()
     ages = []
 
-    for friend in friends['response']['items']:
+    for friend in friends:
         try:
             day, month, year = map(int, friend['bdate'].split('.'))
             bdate = dt.datetime(year, month, day)
@@ -35,4 +35,4 @@ def age_predict(user_id: int) -> Optional[float]:
 
 
 if __name__ == "__main__":
-    print(age_predict(759373))
+    print(age_predict(8606586))
