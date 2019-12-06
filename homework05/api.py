@@ -17,14 +17,19 @@ def get(url, params=({}), timeout=5, max_retries=5, backoff_factor=1.3):
     delay = 0.1
     while retries < max_retries:
         try:
-            response = requests.get(url, str(timeout))
+            response = requests.get(url, timeout=timeout)
             response.raise_for_status()
-            if response.status_code == 200:
-                return response
         except requests.exceptions.RequestException:
             time.sleep(delay)
             delay = delay * backoff_factor + random.uniform(0, 0.1)
             retries += 1
+        else:
+            if 'error' in response.json():
+                time.sleep(delay)
+                delay = delay * backoff_factor + random.uniform(0, 0.1)
+                retries += 1
+            else:
+                return response
     return False
 
 
@@ -47,9 +52,11 @@ def get_friends(user_id, fields):
         return response.json()['response']['items']
     except:
         return None
-    # return response.json(), response.json()['response']['items']
 
 
 if __name__ == "__main__":
-    print(get_friends(105153820, ''))
+    names = get_friends(141602985, 'first_name')
+    print(names)
+    vertices = [names[i]['first_name'] + ' ' + names[i]['last_name'] for i in range(len(names))]
+    print(vertices)
     # print(get('http://sdjhgadhjghs.om'))

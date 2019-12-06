@@ -8,7 +8,6 @@ def get_network(users_ids, as_edgelist=True):
     matrix = [[0] * len(users_ids) for _ in users_ids]
 
     for i in range(len(users_ids)):
-        # print('i =', i, 'user_id =', users_ids[i])
         friends = get_friends(users_ids[i], '')
         if friends is None:
             continue
@@ -28,13 +27,9 @@ def get_network(users_ids, as_edgelist=True):
 
 def plot_graph(graph, analysed_user):
     graph.simplify(multiple=True, loops=True)
-
     communities = graph.community_edge_betweenness(directed=False)
     clusters = communities.as_clustering()
-
     graph.delete_vertices(analysed_user)
-    graph.simplify(multiple=True, loops=True)
-    # print(clusters)
 
     N = len(graph.vs)
     visual_style = dict()
@@ -49,15 +44,20 @@ def plot_graph(graph, analysed_user):
 
 
 if __name__ == "__main__":
-    analysed_user = 8606586
+    analysed_user = 1
 
-    friends = get_friends(analysed_user, '')
-    friends.insert(0, analysed_user)
+    friends = get_friends(analysed_user, 'first_name')
+    friends_ids = [friends[i]['id'] for i in range(len(friends))]
+    friends_ids.insert(0, analysed_user)
 
-    edgelist = get_network(friends, as_edgelist=True)
-    numbers = {friends[i]: i for i in range(len(friends))}
-    edgelist = [(numbers[edgelist[i][0]], numbers[edgelist[i][1]]) for i in range(len(edgelist))]
-    vertices = [i for i in range(len(friends))]
+    edgelist = get_network(friends_ids, as_edgelist=True)
+    friends_numbers = {friends_ids[i]: i for i in range(len(friends_ids))}
+    edgelist = [(friends_numbers[edgelist[i][0]], friends_numbers[edgelist[i][1]]) for i in range(len(edgelist))]
 
+    # с именами пользователей
+    # vertices = [friends[i]['first_name'] + ' ' + friends[i]['last_name'] for i in range(len(friends))]
+    # vertices.insert(0, 'analysed user')
+
+    vertices = [i for i in range(len(friends_numbers))]
     friends_graph = igraph.Graph(vertex_attrs={"label": vertices}, edges=edgelist, directed=False)
-    plot_graph(friends_graph, numbers[analysed_user])
+    plot_graph(friends_graph, friends_numbers[analysed_user])
