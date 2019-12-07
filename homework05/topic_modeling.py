@@ -76,8 +76,7 @@ def text_normalize(data_file, corpora_file):
                     check_if_stop_word = is_stop_word(w)
                     if check_if_stop_word is True:
                         continue
-                    normal = check_if_stop_word[1]
-                    res.append(normal)
+                    res.append(check_if_stop_word[1])
 
         res = ' '.join(res)
         file_out.write('\n'.join(textwrap.wrap(res, 120)))
