@@ -68,7 +68,7 @@ def text_normalize(data_file, corpora_file):
         for s in tqdm(text):
             s = s.strip().split(' ')
             for word in s:
-                if not is_real_word(word) or not is_in_russian(word):
+                if not is_word_in_russian(word):
                     continue
                 word_arr = clean(word)
 
@@ -77,24 +77,14 @@ def text_normalize(data_file, corpora_file):
                     if check_if_stop_word is True:
                         continue
                     normal = check_if_stop_word[1]
-                    if normal == 'быть':
-                        res.append(normal)
+                    res.append(normal)
 
         res = ' '.join(res)
         file_out.write('\n'.join(textwrap.wrap(res, 120)))
         return res
 
 
-def is_real_word(word) -> bool:
-    correct = False
-    for ch in word:
-        if ch.isalpha():
-            correct = True
-            break
-    return correct
-
-
-def is_in_russian(word) -> bool:
+def is_word_in_russian(word) -> bool:
     for ch in word:
         if not 1040 <= ord(ch) <= 1103:
             return False
@@ -110,14 +100,17 @@ def is_stop_word(word):
     pos = tag.POS
     if pos in stop_tags:
         return True
-
     if pos == 'ADJF' and 'Apro' in tag or pos == 'ADVB' and 'Ques' in tag:
         return True
-    return False, word_parsed.normal_form
+
+    normal = word_parsed.normal_form
+    if normal == 'быть':
+        return True
+    return False, normal
 
 
 def clean(word):
-    # удаляем лишние символы в начале и в конце
+    # удаляем лишние символы вначале и в конце
     word = list(word.strip())
     start = 0
     while True:
@@ -147,8 +140,6 @@ def clean(word):
 
 
 if __name__ == "__main__":
-    # data_frame = get_wall(domain='das_leben_der_anderen', count=5).to_string()
-
     publics = ['awesomelanguages', 'akademia_pauk', 'linguista_sum', 'public68409238', 'pss_languages',
                'linguaehobbitique', 'languageroutine', 'lousylinguist', 'glutton4langs', 'languagesandme', 'loveguages']
 
