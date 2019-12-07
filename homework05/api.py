@@ -55,8 +55,4 @@ def get_friends(user_id, fields):
 
 
 if __name__ == "__main__":
-    names = get_friends(141602985, 'first_name')
-    print(names)
-    vertices = [names[i]['first_name'] + ' ' + names[i]['last_name'] for i in range(len(names))]
-    print(vertices)
-    # print(get('http://sdjhgadhjghs.om'))
+    friends = get_friends(1, 'first_name')

@@ -5,9 +5,6 @@ from typing import Optional
 from api import get_friends
 
 
-# from api_models import User
-
-
 def age_predict(user_id: int) -> Optional[float]:
     """ Наивный прогноз возраста по возрасту друзей
     Возраст считается как медиана среди возраста всех друзей пользователя
@@ -35,4 +32,4 @@ def age_predict(user_id: int) -> Optional[float]:
 
 
 if __name__ == "__main__":
-    print(age_predict(8606586))
+    print(age_predict(1))
