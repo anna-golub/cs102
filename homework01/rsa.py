@@ -35,8 +35,7 @@ def generate_keypair(p: int, q: int) -> Tuple[Tuple[int, int], Tuple[int, int]]:
     phi = (p - 1) * (q - 1)
 
     # Choose an integer e such that e and phi(n) are coprime
-    # e = random.randrange(1, phi)
-    e = 19
+    e = random.randrange(1, phi)
 
     # Use Euclid's Algorithm to verify that e and phi(n) are comprime
     g = gcd(e, phi)
@@ -44,7 +43,6 @@ def generate_keypair(p: int, q: int) -> Tuple[Tuple[int, int], Tuple[int, int]]:
     while g != 1:
         e = random.randrange(1, phi)
         g = gcd(e, phi)
-    print('e =', e)
 
     # Use Extended Euclid's Algorithm to generate the private key
     d = multiplicative_inverse(e, phi)
@@ -98,10 +96,6 @@ def multiplicative_inverse(e: int, phi: int) -> int:
         a1 = a2
         b0 = b1
         b1 = b2
-
-        print('r0 =', r0, 'a0 =', a0, 'b0 =', b0)
-        print('r1 =', r1, 'a1 =', a1, 'b1 =', b1)
-        print('r2 =', r2, 'a2 =', a2, 'b2 =', b2)
 
     if a0 < 0:
         a0 += phi * (abs(a0) // phi + 1)
