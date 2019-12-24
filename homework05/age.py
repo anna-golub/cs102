@@ -32,4 +32,4 @@ def age_predict(user_id: int) -> Optional[float]:
 
 
 if __name__ == "__main__":
-    print(age_predict(1))
+    print(age_predict(141602985))

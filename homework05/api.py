@@ -55,4 +55,5 @@ def get_friends(user_id, fields):
 
 
 if __name__ == "__main__":
-    friends = get_friends(1, 'first_name')
+    friends = get_friends(311595789, '')
+    print(friends)

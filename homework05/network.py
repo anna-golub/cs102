@@ -15,7 +15,7 @@ def get_network(users_ids, as_edgelist=True):
         for j in range(i + 1, len(users_ids)):
             if users_ids[j] in friends:
                 if as_edgelist:
-                    edgelist.append((users_ids[i], users_ids[j]))
+                    edgelist.append((i, j))
                 else:
                     matrix[i][j] = 1
                     matrix[j][i] = 1
@@ -25,12 +25,7 @@ def get_network(users_ids, as_edgelist=True):
     return matrix
 
 
-def plot_graph(graph, analysed_user):
-    graph.simplify(multiple=True, loops=True)
-    communities = graph.community_edge_betweenness(directed=False)
-    clusters = communities.as_clustering()
-    graph.delete_vertices(analysed_user)
-
+def plot_graph(graph, analysed_user_index):
     N = len(graph.vs)
     visual_style = dict()
     visual_style["layout"] = graph.layout_fruchterman_reingold(
@@ -38,26 +33,34 @@ def plot_graph(graph, analysed_user):
         area=N ** 3,
         repulserad=N ** 3)
 
+    visual_style['vertex_size'] = 17
+    visual_style['vertex_label_size'] = 9
+    visual_style['edge_width'] = 0.3
+
+    graph.simplify(multiple=True, loops=True)
+    communities = graph.community_edge_betweenness(directed=False)
+    clusters = communities.as_clustering()
+    graph.delete_vertices(analysed_user_index)
+
     pal = igraph.drawing.colors.ClusterColoringPalette(len(clusters))
     graph.vs['color'] = pal.get_many(clusters.membership)
     igraph.plot(graph, **visual_style)
 
 
 if __name__ == "__main__":
-    analysed_user = 1
+    analysed_user = 222620376
 
     friends = get_friends(analysed_user, 'first_name')
     friends_ids = [friends[i]['id'] for i in range(len(friends))]
-    friends_ids.insert(0, analysed_user)
-
     edgelist = get_network(friends_ids, as_edgelist=True)
-    friends_numbers = {friends_ids[i]: i for i in range(len(friends_ids))}
-    edgelist = [(friends_numbers[edgelist[i][0]], friends_numbers[edgelist[i][1]]) for i in range(len(edgelist))]
+
+    vertices = [i for i in range(len(friends_ids))]
+    vertices.append(len(friends_ids))
 
     # с именами пользователей
     # vertices = [friends[i]['first_name'] + ' ' + friends[i]['last_name'] for i in range(len(friends))]
-    # vertices.insert(0, 'analysed user')
+    # vertices.append('analysed user')
 
-    vertices = [i for i in range(len(friends_numbers))]
+    edgelist.extend([(len(friends_ids), i) for i in range(len(friends_ids))])
     friends_graph = igraph.Graph(vertex_attrs={"label": vertices}, edges=edgelist, directed=False)
-    plot_graph(friends_graph, friends_numbers[analysed_user])
+    plot_graph(friends_graph, len(friends_ids))
