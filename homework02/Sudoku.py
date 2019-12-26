@@ -214,7 +214,7 @@ def generate_sudoku(N: int) -> List[List[str]]:
 
 
 if __name__ == '__main__':
-    for fname in ['puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt']:
+    for fname in ['puzzle1.txt']:
         grid = read_sudoku(fname)
         display(grid)
         solution = solve(grid)
