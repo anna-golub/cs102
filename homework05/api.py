@@ -55,5 +55,11 @@ def get_friends(user_id, fields):
 
 
 if __name__ == "__main__":
-    friends = get_friends(311595789, '')
-    print(friends)
+    friends = get_friends(759373, 'first_name')
+
+    with open('jean_friends.txt', 'w', encoding='utf-8') as file:
+        n = 0
+        for fr in friends:
+            string = str(n) + ' ' + fr['first_name'] + ' ' + fr['last_name'] + '\n'
+            file.write(string)
+            n += 1
